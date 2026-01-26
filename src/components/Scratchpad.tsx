@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export function Scratchpad() {
-  const { content, updateContent, clearNotes, lastSaved, timeRemaining, hasContent } = useLocalStorage();
+  const { content, updateContent, clearNotes, timeRemaining, hasContent } = useLocalStorage();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--paper))' }}>
@@ -14,21 +14,9 @@ export function Scratchpad() {
         </div>
         
         <div className="flex items-center gap-3">
-          {lastSaved && (
-            <div className="status-pill saved">
-              <span className="save-indicator" />
-              <span>Saved locally</span>
-              <span className="opacity-50">•</span>
-              <span>Expires in {timeRemaining}</span>
-            </div>
-          )}
-          
-          {!lastSaved && !hasContent && (
-            <div className="status-pill">
-              <span>Start typing to save</span>
-            </div>
-          )}
-          
+          <div className="status-pill saved">
+            <span>Expires in {timeRemaining}</span>
+          </div>
           {hasContent && (
             <button onClick={clearNotes} className="clear-button">
               Clear Notes
