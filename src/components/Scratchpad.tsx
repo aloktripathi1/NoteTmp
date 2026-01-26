@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
-export function Scratchpad() {
+export function NoteTmp() {
   const { content, updateContent, clearNotes, timeRemaining, hasContent } = useLocalStorage();
 
   return (
@@ -9,7 +9,7 @@ export function Scratchpad() {
       <header className="flex items-center justify-between px-6 py-4 border-b border-border/50">
         <div className="flex items-center gap-3">
           <h1 className="text-sm font-medium tracking-tight" style={{ color: 'hsl(var(--ink))' }}>
-            Scratchpad
+            NoteTmp
           </h1>
         </div>
         
@@ -29,7 +29,7 @@ export function Scratchpad() {
       <main className="flex-1 p-6 md:p-10 lg:p-16">
         <div className="max-w-3xl mx-auto h-full">
           <textarea
-            className="scratchpad-textarea"
+            className="notetmp-textarea"
             style={{ minHeight: 'calc(100vh - 180px)' }}
             value={content}
             onChange={(e) => updateContent(e.target.value)}

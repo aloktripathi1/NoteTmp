@@ -35,7 +35,7 @@
 
     --radius: 0.5rem;
 
-    /* Custom scratchpad tokens */
+    /* Custom notetmp tokens */
     --paper: 42 40% 97%;
     --ink: 30 15% 18%;
     --ink-light: 30 8% 45%;
@@ -92,7 +92,7 @@
 }
 
 @layer components {
-  .scratchpad-textarea {
+  .notetmp-textarea {
     @apply w-full h-full resize-none border-0 bg-transparent p-0 focus:outline-none focus:ring-0;
     font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
     font-size: 0.9375rem;
@@ -104,7 +104,7 @@
     word-wrap: break-word;
   }
 
-  .scratchpad-textarea::placeholder {
+  .notetmp-textarea::placeholder {
     color: hsl(var(--ink-light));
     opacity: 0.6;
   }

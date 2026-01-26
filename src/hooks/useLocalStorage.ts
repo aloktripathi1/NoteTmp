@@ -6,7 +6,7 @@ interface StoredData {
   expiresIn: number; // hours
 }
 
-const STORAGE_KEY = 'scratchpad_data';
+const STORAGE_KEY = 'notetmp_data';
 const DEFAULT_EXPIRY_HOURS = 6;
 const DEBOUNCE_MS = 400;
 

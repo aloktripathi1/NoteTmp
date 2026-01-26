@@ -1,7 +1,7 @@
-import { Scratchpad } from '@/components/Scratchpad';
+import { NoteTmp } from '@/components/Scratchpad';
 
 const Index = () => {
-  return <Scratchpad />;
+  return <NoteTmp />;
 };
 
 export default Index;
