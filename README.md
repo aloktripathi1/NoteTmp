@@ -1,4 +1,9 @@
-# Scratchpad App
+
+# NoteTmp
+
+## Project info
+
+NoteTmp is a simple, privacy-friendly web app for taking quick notes that auto-save in your browser and expire after a set time. No sign-up required, no cloud storage—just open and jot down your thoughts, todos, or reminders. Perfect for temporary notes you don’t want to keep forever.
 
 ## Project info
 
