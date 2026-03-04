@@ -75,14 +75,17 @@ export function NoteTmp() {
       });
       return;
     }
-    if (confirm('Delete this tab? This cannot be undone.')) {
-      deleteTab(tabId);
-      toast({
-        title: 'Tab deleted',
-        description: 'The tab has been removed.',
-      });
+    const tab = tabs.find(t => t.id === tabId);
+    const hasContent = tab && tab.content.trim().length > 0;
+    if (hasContent && !confirm('Delete this tab? This cannot be undone.')) {
+      return;
     }
-  }, [tabs.length, deleteTab, toast]);
+    deleteTab(tabId);
+    toast({
+      title: 'Tab deleted',
+      description: 'The tab has been removed.',
+    });
+  }, [tabs, deleteTab, toast]);
 
   // Keyboard shortcuts
   useEffect(() => {
