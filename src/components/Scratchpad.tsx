@@ -2,10 +2,20 @@ import { useTabStorage } from '@/hooks/useTabStorage';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { useSettings } from '@/hooks/useSettings';
 import { SettingsMenu } from '@/components/SettingsMenu';
-import { FileText, Plus, X } from 'lucide-react';
+import { FileText, Plus, X, Clock } from 'lucide-react';
 import { useEffect, useMemo, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+
+// Extract a title from the first `# Heading` line, or fall back to the default
+function getTabTitle(content: string, fallback: string): string {
+  const firstLine = content.split('\n')[0].trim();
+  if (firstLine.startsWith('#')) {
+    const title = firstLine.replace(/^#+\s*/, '').trim();
+    if (title) return title;
+  }
+  return fallback;
+}
 
 export function NoteTmp() {
   const {
@@ -40,8 +50,10 @@ export function NoteTmp() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    const tabNumber = tabs.indexOf(activeTab!) + 1;
-    link.download = `notetmp-tab${tabNumber}-${new Date().toISOString().slice(0, 10)}.txt`;
+    const tabIndex = tabs.findIndex(t => t.id === activeTabId);
+    const rawTitle = getTabTitle(content, `notetmp-tab${tabIndex + 1}`);
+    const safeName = rawTitle.replace(/[^a-z0-9\-_.\s]/gi, '').replace(/\s+/g, '-').toLowerCase();
+    link.download = `${safeName}.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -115,20 +127,12 @@ export function NoteTmp() {
           <h1 className="text-base font-semibold tracking-tight" style={{ color: 'hsl(var(--ink))' }}>
             NoteTmp
           </h1>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={addTab}
-            className="h-6 w-6 p-0 rounded-full"
-            title="New tab"
-          >
-            <Plus className="h-3 w-3" />
-          </Button>
         </div>
         
         <div className="flex items-center gap-3">
           <div className="status-pill saved">
-            <span>⏱️ {timeRemaining || '6h 0m'}</span>
+            <Clock className="h-3 w-3" />
+            <span>{timeRemaining || '6h 0m'}</span>
           </div>
           <SettingsMenu
             isDark={isDark}
@@ -147,32 +151,48 @@ export function NoteTmp() {
       {/* Tabs Bar */}
       <div className="border-b border-border/50 bg-background/30 px-6 overflow-x-auto">
         <div className="flex items-center gap-1 min-w-max">
-          {tabs.map((tab) => (
-            <button
+          {tabs.map((tab, index) => (
+            <div
               key={tab.id}
-              onClick={() => switchTab(tab.id)}
               className={`
-                group relative flex items-center gap-2 px-3 py-1.5 transition-all
-                ${tab.id === activeTabId
-                  ? 'border-b-2 border-primary text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-                }
+                group relative flex items-center gap-1 transition-all
+                ${tab.id === activeTabId ? 'border-b-2 border-primary mb-[-1px]' : ''}
               `}
             >
-              <span className="text-sm font-medium max-w-[150px] truncate">
-                Tab {tabs.indexOf(tab) + 1}
-              </span>
+              <button
+                onClick={() => switchTab(tab.id)}
+                className={`
+                  flex items-center px-3 py-1.5 transition-all
+                  ${tab.id === activeTabId
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                  }
+                `}
+              >
+                <span className="text-sm font-medium max-w-[150px] truncate">
+                  {getTabTitle(tab.content, `Tab ${index + 1}`)}
+                </span>
+              </button>
               {tabs.length > 1 && (
                 <button
                   onClick={(e) => handleDeleteTab(tab.id, e)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity hover:text-destructive"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity hover:text-destructive pr-1"
                   title="Delete tab"
                 >
                   <X className="h-3 w-3" />
                 </button>
               )}
-            </button>
+            </div>
           ))}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={addTab}
+            className="h-7 w-7 p-0 rounded-full ml-1 my-1"
+            title="New tab (Ctrl+T)"
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
         </div>
       </div>
 
@@ -199,7 +219,7 @@ export function NoteTmp() {
       {/* Enhanced footer */}
       <footer className="px-6 py-4 text-center border-t border-border/30">
         <p className="text-xs" style={{ color: 'hsl(var(--ink-light))', opacity: 0.6 }}>
-          Auto-saves every few seconds • Notes expire after 6 hours • Works offline
+          Auto-saves every few seconds • Notes expire after {activeTab?.expiresIn ?? 6} hours • Works offline
         </p>
       </footer>
     </div>
