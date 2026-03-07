@@ -17,14 +17,13 @@ const STORAGE_KEY = 'notetmp_tabs_data';
 const DEFAULT_EXPIRY_HOURS = 6;
 const DEBOUNCE_MS = 400;
 
+const generateId = () => `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
 export function useTabStorage() {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTabId, setActiveTabId] = useState<string>('');
   const [timeRemaining, setTimeRemaining] = useState<string>('');
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-
-  // Generate unique ID
-  const generateId = () => `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   // Calculate time remaining until expiry
   const calculateTimeRemaining = useCallback((timestamp: number, hours: number): string => {
