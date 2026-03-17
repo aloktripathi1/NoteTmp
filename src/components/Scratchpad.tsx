@@ -150,7 +150,8 @@ export function NoteTmp() {
 
       {/* Tabs Bar */}
       <div className="shrink-0 border-b border-border/50 bg-background/30 px-6 overflow-x-auto">
-        <div className="flex items-center gap-1 min-w-max">
+        <div className="flex w-full justify-center">
+          <div className="flex items-center gap-2 min-w-max">
           {tabs.map((tab, index) => (
             <div
               key={tab.id}
@@ -188,11 +189,12 @@ export function NoteTmp() {
             variant="ghost"
             size="sm"
             onClick={addTab}
-            className="h-7 w-7 p-0 rounded-full ml-1 my-1"
+            className="h-7 w-7 p-0 rounded-full"
             title="New tab (Ctrl+T)"
           >
             <Plus className="h-3.5 w-3.5" />
           </Button>
+          </div>
         </div>
       </div>
 
