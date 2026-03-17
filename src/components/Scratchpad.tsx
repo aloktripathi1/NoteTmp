@@ -119,9 +119,9 @@ export function NoteTmp() {
   }, [hasContent, handleClearNotes, exportNotes]);
 
   return (
-    <div className="min-h-screen flex flex-col transition-colors duration-300" style={{ background: 'hsl(var(--paper))' }}>
+    <div className="app-shell flex flex-col transition-colors duration-300" style={{ background: 'hsl(var(--paper))' }}>
       {/* Header with status */}
-      <header className="flex items-center justify-between px-6 py-2 border-b border-border/50 backdrop-blur-sm bg-background/50">
+      <header className="shrink-0 flex items-center justify-between px-6 py-2 border-b border-border/50 backdrop-blur-sm bg-background/50">
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-primary" />
           <h1 className="text-base font-semibold tracking-tight" style={{ color: 'hsl(var(--ink))' }}>
@@ -149,7 +149,7 @@ export function NoteTmp() {
       </header>
 
       {/* Tabs Bar */}
-      <div className="border-b border-border/50 bg-background/30 px-6 overflow-x-auto">
+      <div className="shrink-0 border-b border-border/50 bg-background/30 px-6 overflow-x-auto">
         <div className="flex items-center gap-1 min-w-max">
           {tabs.map((tab, index) => (
             <div
@@ -197,12 +197,11 @@ export function NoteTmp() {
       </div>
 
       {/* Main writing area */}
-      <main className="flex-1 p-6 md:p-10 lg:p-16">
+      <main className="flex-1 min-h-0 overflow-hidden p-6 md:p-10 lg:p-16">
         <div className="max-w-4xl mx-auto h-full">
           <textarea
-            className="notetmp-textarea"
+            className="notetmp-textarea h-full"
             style={{
-              minHeight: 'calc(100vh - 180px)',
               fontSize: `${settings.fontSize}px`,
               lineHeight: settings.lineHeight,
               tabSize: settings.tabSize,
@@ -217,7 +216,7 @@ export function NoteTmp() {
       </main>
 
       {/* Enhanced footer */}
-      <footer className="px-6 py-4 text-center border-t border-border/30">
+      <footer className="shrink-0 px-6 py-4 text-center border-t border-border/30">
         <p className="text-xs" style={{ color: 'hsl(var(--ink-light))', opacity: 0.6 }}>
           Auto-saves every few seconds • Notes expire after {activeTab?.expiresIn ?? 6} hours • Works offline
         </p>
