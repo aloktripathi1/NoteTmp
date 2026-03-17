@@ -76,6 +76,26 @@ export function NoteTmp() {
     }
   }, [clearCurrentTab, toast]);
 
+  const handleClearSavedData = useCallback(() => {
+    if (!confirm('Clear all saved local data? This will remove tabs, settings, and theme and reload the app.')) {
+      return;
+    }
+
+    localStorage.removeItem('notetmp_tabs_data');
+    localStorage.removeItem('notetmp_data');
+    localStorage.removeItem('notetmp_settings');
+    localStorage.removeItem('notetmp_theme');
+
+    toast({
+      title: 'Saved data cleared',
+      description: 'Reloading with a fresh state.',
+    });
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 150);
+  }, [toast]);
+
   // Handle delete tab
   const handleDeleteTab = useCallback((tabId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -132,7 +152,7 @@ export function NoteTmp() {
         <div className="flex items-center gap-3">
           <div className="status-pill saved">
             <Clock className="h-3 w-3" />
-            <span>{timeRemaining || '6h 0m'}</span>
+            <span>{timeRemaining}</span>
           </div>
           <SettingsMenu
             isDark={isDark}
@@ -140,6 +160,7 @@ export function NoteTmp() {
             settings={settings}
             updateSettings={updateSettings}
             onClearNotes={handleClearNotes}
+            onClearSavedData={handleClearSavedData}
             onExportNotes={exportNotes}
             hasContent={hasContent}
             wordCount={wordCount}
@@ -220,7 +241,7 @@ export function NoteTmp() {
       {/* Enhanced footer */}
       <footer className="shrink-0 px-6 py-4 text-center border-t border-border/30">
         <p className="text-xs" style={{ color: 'hsl(var(--ink-light))', opacity: 0.6 }}>
-          Auto-saves every few seconds • Notes expire after {activeTab?.expiresIn ?? 6} hours • Works offline
+          Auto-saves every few seconds • Stored locally until you clear browser storage • Works offline
         </p>
       </footer>
     </div>

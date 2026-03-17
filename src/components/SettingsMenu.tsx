@@ -11,6 +11,7 @@ interface SettingsMenuProps {
   settings: Settings;
   updateSettings: (settings: Partial<Settings>) => void;
   onClearNotes: () => void;
+  onClearSavedData: () => void;
   onExportNotes: () => void;
   hasContent: boolean;
   wordCount: number;
@@ -23,6 +24,7 @@ export function SettingsMenu({
   settings,
   updateSettings,
   onClearNotes,
+  onClearSavedData,
   onExportNotes,
   hasContent,
   wordCount,
@@ -143,6 +145,16 @@ export function SettingsMenu({
             </div>
 
             <Separator />
+
+            <Button
+              variant="destructive"
+              onClick={onClearSavedData}
+              className="w-full justify-center"
+              title="Clear all saved local data"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Clear saved local data
+            </Button>
 
             <div className="text-xs text-muted-foreground space-y-1">
               <div>⌘/Ctrl + K - Clear notes</div>

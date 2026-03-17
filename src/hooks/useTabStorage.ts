@@ -5,7 +5,6 @@ export interface Tab {
   title: string;
   content: string;
   timestamp: number;
-  expiresIn: number; // hours
 }
 
 interface TabStorageData {
@@ -14,7 +13,6 @@ interface TabStorageData {
 }
 
 const STORAGE_KEY = 'notetmp_tabs_data';
-const DEFAULT_EXPIRY_HOURS = 6;
 const DEBOUNCE_MS = 400;
 
 const generateId = () => `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -22,30 +20,8 @@ const generateId = () => `tab_${Date.now()}_${Math.random().toString(36).substr(
 export function useTabStorage() {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTabId, setActiveTabId] = useState<string>('');
-  const [timeRemaining, setTimeRemaining] = useState<string>('');
+  const timeRemaining = 'Saved locally';
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-
-  // Calculate time remaining until expiry
-  const calculateTimeRemaining = useCallback((timestamp: number, hours: number): string => {
-    const expiryTime = timestamp + hours * 60 * 60 * 1000;
-    const remaining = expiryTime - Date.now();
-    
-    if (remaining <= 0) return 'Expired';
-    
-    const hoursLeft = Math.floor(remaining / (60 * 60 * 1000));
-    const minutesLeft = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-    
-    if (hoursLeft > 0) {
-      return `${hoursLeft}h ${minutesLeft}m`;
-    }
-    return `${minutesLeft}m`;
-  }, []);
-
-  // Check if tab has expired
-  const isExpired = useCallback((tab: Tab): boolean => {
-    const expiryTime = tab.timestamp + tab.expiresIn * 60 * 60 * 1000;
-    return Date.now() > expiryTime;
-  }, []);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -53,8 +29,7 @@ export function useTabStorage() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const data: TabStorageData = JSON.parse(stored);
-        // Filter out expired tabs
-        const validTabs = data.tabs.filter(tab => !isExpired(tab));
+        const validTabs = data.tabs;
         
         if (validTabs.length > 0) {
           setTabs(validTabs);
@@ -68,7 +43,6 @@ export function useTabStorage() {
             title: 'Untitled',
             content: '',
             timestamp: Date.now(),
-            expiresIn: DEFAULT_EXPIRY_HOURS,
           };
           setTabs([newTab]);
           setActiveTabId(newTab.id);
@@ -80,7 +54,6 @@ export function useTabStorage() {
           title: 'Untitled',
           content: '',
           timestamp: Date.now(),
-          expiresIn: DEFAULT_EXPIRY_HOURS,
         };
         setTabs([newTab]);
         setActiveTabId(newTab.id);
@@ -92,25 +65,11 @@ export function useTabStorage() {
         title: 'Untitled',
         content: '',
         timestamp: Date.now(),
-        expiresIn: DEFAULT_EXPIRY_HOURS,
       };
       setTabs([newTab]);
       setActiveTabId(newTab.id);
     }
-  }, [isExpired]);
-
-  // Update time remaining every minute
-  useEffect(() => {
-    const activeTab = tabs.find(tab => tab.id === activeTabId);
-    if (!activeTab) return;
-    
-    const updateRemaining = () => {
-      setTimeRemaining(calculateTimeRemaining(activeTab.timestamp, activeTab.expiresIn));
-    };
-    updateRemaining();
-    const interval = setInterval(updateRemaining, 60000);
-    return () => clearInterval(interval);
-  }, [tabs, activeTabId, calculateTimeRemaining]);
+  }, []);
 
   // Save to localStorage with debounce
   const saveToStorage = useCallback((updatedTabs: Tab[], currentActiveId: string) => {
@@ -162,7 +121,6 @@ export function useTabStorage() {
       title: 'Untitled',
       content: '',
       timestamp: Date.now(),
-      expiresIn: DEFAULT_EXPIRY_HOURS,
     };
     setTabs(prevTabs => {
       const updatedTabs = [...prevTabs, newTab];
@@ -184,7 +142,6 @@ export function useTabStorage() {
           title: 'Untitled',
           content: '',
           timestamp: Date.now(),
-          expiresIn: DEFAULT_EXPIRY_HOURS,
         };
         const newTabs = [newTab];
         saveToStorage(newTabs, newTab.id);
