@@ -238,12 +238,6 @@ export function NoteTmp() {
         </div>
       </main>
 
-      {/* Enhanced footer */}
-      <footer className="shrink-0 px-6 py-4 text-center border-t border-border/30">
-        <p className="text-xs" style={{ color: 'hsl(var(--ink-light))', opacity: 0.6 }}>
-          Auto-saves every few seconds • Stored locally until you clear browser storage • Works offline
-        </p>
-      </footer>
     </div>
   );
 }

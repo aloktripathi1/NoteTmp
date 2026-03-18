@@ -47,13 +47,13 @@
 
   .dark {
     --background: 30 10% 8%;
-    --foreground: 40 20% 92%;
+    --foreground: 36 16% 86%;
 
     --card: 30 10% 10%;
-    --card-foreground: 40 20% 92%;
+    --card-foreground: 36 16% 86%;
 
     --popover: 30 10% 10%;
-    --popover-foreground: 40 20% 92%;
+    --popover-foreground: 36 16% 86%;
 
     --primary: 40 20% 92%;
     --primary-foreground: 30 10% 8%;
@@ -76,8 +76,8 @@
 
     /* Dark mode paper-like tokens */
     --paper: 30 10% 10%;
-    --ink: 40 20% 88%;
-    --ink-light: 30 10% 60%;
+    --ink: 36 18% 84%;
+    --ink-light: 32 10% 66%;
     --status-bg: 30 8% 14%;
     --glow: 25 70% 50%;
   }
