@@ -1,6 +1,6 @@
 # NoteTmp ✨
 
-A beautiful, minimalist note-taking app with smart features and a focus on simplicity. Your notes are auto-saved and expire after 6 hours, perfect for temporary notes and quick thoughts.
+A beautiful, minimalist note-taking app with smart features and a focus on simplicity. Your notes are auto-saved and stored locally in your browser until you clear them.
 
 ## 🎨 Features
 
@@ -26,7 +26,7 @@ A beautiful, minimalist note-taking app with smart features and a focus on simpl
 
 ### 💾 Smart Storage
 - Auto-save every few seconds
-- 6-hour expiration timer
+- Stored locally until you clear browser storage
 - Works completely offline
 - Debounced saves to optimize performance
 
@@ -84,7 +84,7 @@ src/
 │   ├── SettingsMenu.tsx    # Settings popover with controls
 │   └── ui/                 # shadcn/ui components
 ├── hooks/
-│   ├── useLocalStorage.ts  # Auto-save & expiry logic
+│   ├── useLocalStorage.ts  # Auto-save & local persistence logic
 │   ├── useDarkMode.ts      # Dark mode state management
 │   └── useSettings.ts      # User preferences
 ├── pages/
@@ -122,7 +122,7 @@ const DEFAULT_SETTINGS = {
 1. **Focus Mode**: The interface fades away as you type, keeping you focused
 2. **Keyboard First**: Most actions have keyboard shortcuts for faster workflow
 3. **Auto-Save**: Your work is saved automatically - no manual save needed
-4. **Temporary by Design**: Notes expire after 6 hours, perfect for ephemeral thoughts
+4. **Persistent by Default**: Notes stay saved locally until you clear them
 
 ## 🤝 Contributing
 
@@ -130,7 +130,7 @@ Feel free to submit issues and enhancement requests!
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+This project is open source and available under the MIT License. See the LICENSE file for full text.
 
 ---
 
